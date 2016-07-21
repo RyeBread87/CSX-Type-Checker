@@ -33,8 +33,6 @@ abstract class Visitor {
 	abstract  void visit(identNode n);
 	abstract  void visit(nameNode n);
 	abstract  void visit(asgNode n);
-	abstract  void visit(incrementNode n);
-	abstract  void visit(decrementNode n);
 	abstract  void visit(printNode n);
 	abstract  void visit(nullPrintNode n);
 	abstract  void visit(readNode n);
@@ -58,6 +56,9 @@ abstract class Visitor {
 	abstract  void visit(breakNode n);
 	abstract  void visit(continueNode n);
 	abstract  void visit(castNode n);
+	abstract  void visit(incrementNode n);
+	abstract  void visit(decrementNode n);
+
 
 
 }  

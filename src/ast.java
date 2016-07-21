@@ -1,8 +1,7 @@
 
 /*  This defines AST classes for CSX
  *  Little, if any, of this needs to be changed
- *  This AST definition has been extended from that used in proj 3 to include Type and
- *  Kind information.
+ * 
  */
 // abstract superclass; only subclasses are actually created  
 abstract class ASTNode {
@@ -280,7 +279,7 @@ class methodDeclNode extends ASTNode {
        
         public final identNode         name;
         public final argDeclsOption    args;
-        public final typeNode	       returnType; // Correction; was typeNodeOption
+        public final typeNode	       returnType;
         public final fieldDeclsOption  decls;
         public final stmtsOption       stmts;
         
@@ -300,18 +299,20 @@ class methodDeclNode extends ASTNode {
 
 // abstract superclass; only subclasses are actually created
 abstract class argDeclNode extends ASTNode {
-
-        argDeclNode(){super();};
-        argDeclNode(int l,int c){super(l,c);};
+		public  Symb	parm; //Will be cast into ParmInfo later; st node for this parm
+        argDeclNode(){super();parm=null;};
+        argDeclNode(int l,int c){super(l,c);parm=null;};
 };
 
 
-abstract class argDeclsOption extends ASTNode{
+abstract class argDeclsOption extends ASTNode{  
+	public  Symb	parms; //Will be cast into ParmInfo later; list of symbols for the args
 
 	argDeclsOption(int line,int column){
 		super(line,column);
+		parms = null;
 	}
-	argDeclsOption(){ super(); }
+	argDeclsOption(){ super();parms = null; }
 
         static nullArgDeclsNode NULL = new nullArgDeclsNode();
 };
@@ -319,14 +320,17 @@ abstract class argDeclsOption extends ASTNode{
 
 class argDeclsNode extends argDeclsOption {
 
-        public final argDeclNode     thisDecl;
+        public final argDeclNode     thisDecl;  
         public final argDeclsOption    moreDecls;
+    	
+
 
         argDeclsNode(argDeclNode arg, argDeclsOption args,
                         int line, int col){
                 super(line,col);
                 thisDecl=arg;
                 moreDecls=args;
+//                parms = null; 
         }
 
 	void accept(Visitor u) { u.visit(this); }
@@ -437,6 +441,7 @@ class asgNode extends stmtNode {
 };
 
 
+
 class incrementNode extends stmtNode {      
 
 	public final nameNode	target;
@@ -461,6 +466,7 @@ class decrementNode extends stmtNode {
 	
 	void accept(Visitor u){ u.visit(this);}
 };
+
 
 class ifThenNode extends stmtNode {
 	
@@ -633,8 +639,9 @@ class continueNode extends stmtNode {
 
 //abstract superclass; only subclasses are actually created
 abstract class argsNodeOption extends ASTNode {
-	argsNodeOption(){super();};
-	argsNodeOption(int l,int c){super(l,c);};
+	public  Symb	parms; //Will be cast into ParmInfo later; list of symbols for the args
+	argsNodeOption(){super();parms=null;};
+	argsNodeOption(int l,int c){super(l,c);parms=null;};
 
         static nullArgsNode NULL = new nullArgsNode();
 };
@@ -666,15 +673,16 @@ class nullArgsNode extends argsNodeOption {
 class strLitNode extends exprNode {
 
         public final String  strval;
-
+        
         strLitNode(String stringval, int line, int col){
-                super(line,col);
-                strval=stringval;
-        }
+    		super(line,col, ASTNode.Types.Character,
+    				ASTNode.Kinds.String);
+    		strval=stringval;
+    	}
 
 	void accept(Visitor u)  { u.visit(this);}
 };
-
+	
 
 //abstract superclass; only subclasses are actually created
 abstract class exprNodeOption extends ASTNode {

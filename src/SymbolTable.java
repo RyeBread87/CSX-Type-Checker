@@ -1,5 +1,5 @@
 //
-//You may use this symbol table implementation or your own (from project 1)
+//You may use this stmbol table implementation or your own (from project 1)
 //
 import java.util.*;
 import java.io.*;
@@ -7,8 +7,8 @@ class SymbolTable {
    class Scope {
       Hashtable<String,Symb> currentScope;
       Scope next;
-      Scope() {
-         currentScope = new Hashtable<String,Symb>();
+      Scope() {  
+         currentScope = new Hashtable<String,Symb>();  
          next = null;
       }
       Scope(Scope scopes) {
@@ -24,7 +24,7 @@ class SymbolTable {
    public void openScope() {
       top = new Scope(top); }
 
-   public void closeScope() throws EmptySTException {
+   public void closeScope() throws EmptySTException {   
       if (top == null)
          throw new EmptySTException();
       else top = top.next;
